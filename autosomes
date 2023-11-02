@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Function to process a single file
+filter_autosomes() {
+    input_file="$1"
+    output_file="${input_file%.bg}_autosomes.bg"
+    awk '$1 ~ /^chr[1-9]$/ || $1 ~ /^chr1[0-9]$/' "$input_file" > "$output_file"
+}
+
+export -f filter_autosomes
+
+# Find all files that match the pattern *_T_*.bg, and process them in parallel
+ls *.bg | xargs -n 1 -P 10 -I {} bash -c 'filter_autosomes "{}"'
+

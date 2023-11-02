@@ -1,0 +1,11 @@
+#!/usr/bin/env Rscript
+
+args = commandArgs(trailingOnly=TRUE)
+
+# Loop over all arguments
+for (file in args) {
+  d <- read.table(file, header=FALSE)
+  d[, 4] <- scale(d[, 4])
+  output_file <- sub("\\.bg$", "_scaled.bg", file, ignore.case=TRUE)
+  write.table(d, output_file, row.names=F, col.names=F, quote=F, sep="\t")
+}
